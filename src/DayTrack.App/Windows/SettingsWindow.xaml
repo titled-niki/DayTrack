@@ -1,0 +1,77 @@
+<Window x:Class="DayTrack.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="680" Height="860" MinWidth="640" MinHeight="720"
+        ResizeMode="CanResize" WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BgBrush}" Foreground="{DynamicResource TextBrush}"
+        Title="DayTrack Settings" Icon="/Assets/day_tracker_icon_256.png">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource BgBrush}">
+        <Border Margin="18" Padding="26" Background="{DynamicResource PanelBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="16">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Border Width="42" Height="42" Background="{DynamicResource Panel2Brush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            CornerRadius="10" Margin="0,0,11,0">
+                        <Image Source="/Assets/day_tracker_icon_256.png" Stretch="Uniform" Margin="6"/>
+                    </Border>
+                    <TextBlock x:Name="HeaderText" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <TextBlock x:Name="LanguageLabel" FontWeight="SemiBold"/>
+                <ComboBox x:Name="LanguageCombo" Margin="0,7,0,16">
+                    <ComboBoxItem Tag="system"/><ComboBoxItem Tag="en"/><ComboBoxItem Tag="ru"/>
+                    <ComboBoxItem Tag="uk"/><ComboBoxItem Tag="ja"/><ComboBoxItem Tag="zh"/>
+                </ComboBox>
+
+                <TextBlock x:Name="ThemeLabel" FontWeight="SemiBold"/>
+                <ComboBox x:Name="ThemeCombo" Margin="0,7,0,16">
+                    <ComboBoxItem Tag="system"/><ComboBoxItem Tag="light"/><ComboBoxItem Tag="dark"/>
+                </ComboBox>
+
+                <TextBlock x:Name="WidgetModeLabel" FontWeight="SemiBold"/>
+                <ComboBox x:Name="WidgetModeCombo" Margin="0,7,0,16">
+                    <ComboBoxItem Tag="compact"/><ComboBoxItem Tag="normal"/><ComboBoxItem Tag="detailed"/>
+                </ComboBox>
+
+                <TextBlock x:Name="ExportFolderLabel" FontWeight="SemiBold"/>
+                <Grid Margin="0,7,0,6">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <TextBox x:Name="ExportFolderText" IsReadOnly="True" VerticalContentAlignment="Center"/>
+                    <Button x:Name="BrowseFolderButton" Grid.Column="1" MinWidth="120" Margin="8,0,0,0"
+                            Click="BrowseFolder_Click"/>
+                </Grid>
+                <TextBlock x:Name="ExportFolderHint" Foreground="{DynamicResource MutedTextBrush}"
+                           TextWrapping="Wrap" FontSize="12.5" Margin="0,0,0,16"/>
+
+                <TextBlock x:Name="AfkLabel" FontWeight="SemiBold"/>
+                <TextBox x:Name="AfkTextBox" Margin="0,7,0,16"/>
+
+                <Border Background="{DynamicResource Panel2Brush}" BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1" CornerRadius="11" Padding="15" Margin="0,3,0,18">
+                    <StackPanel>
+                        <CheckBox x:Name="AutoStartCheck"/>
+                        <CheckBox x:Name="ShowWidgetCheck"/>
+                        <CheckBox x:Name="DesktopShortcutCheck"/>
+                        <CheckBox x:Name="KeysCheck"/>
+                        <CheckBox x:Name="ClicksCheck"/>
+                        <CheckBox x:Name="NetworkCheck"/>
+                        <CheckBox x:Name="WindowTitlesCheck"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource Panel2Brush}" BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1" CornerRadius="10" Padding="14,12" MinHeight="72" Margin="0,0,0,18">
+                    <TextBlock x:Name="PrivacyNote" Foreground="{DynamicResource MutedTextBrush}"
+                               TextWrapping="Wrap" TextTrimming="None" FontSize="12.5" LineHeight="19"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="CancelButton" MinWidth="100" Click="Cancel_Click"/>
+                    <Button x:Name="SaveButton" MinWidth="110" Click="Save_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Window>

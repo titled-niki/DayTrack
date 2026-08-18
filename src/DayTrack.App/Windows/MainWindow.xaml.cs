@@ -1,0 +1,12 @@
+using DayTrack.Services; using System.Diagnostics; using System.Windows;
+namespace DayTrack.Windows;
+public sealed class GridRow{public string AppName{get;set;}="";public string DisplayTime{get;set;}="";public long Launches{get;set;}}
+public partial class MainWindow:Window
+{
+ readonly AppHost _h;DateTime _f=DateTime.Today,_t=DateTime.Today;
+ public MainWindow(AppHost h){InitializeComponent();_h=h;_h.Loc.LanguageChanged+=ApplyLocalization;ApplyLocalization();Refresh();}
+ public void ApplyLocalization(){if(!Dispatcher.CheckAccess()){Dispatcher.Invoke(ApplyLocalization);return;}SubtitleText.Text=_h.Loc.T("dashboard_subtitle");SettingsButton.Content=_h.Loc.T("settings");TodayButton.Content=_h.Loc.T("today");WeekButton.Content=_h.Loc.T("week");MonthButton.Content=_h.Loc.T("month");AllButton.Content=_h.Loc.T("all_time");ActiveLabel.Text=_h.Loc.T("active");AfkLabel.Text=_h.Loc.T("afk");PcOnLabel.Text=_h.Loc.T("pc_on");KeysLabel.Text=_h.Loc.T("key_presses");TrafficLabel.Text=_h.Loc.T("traffic");AppColumn.Header=_h.Loc.T("app");TimeColumn.Header=_h.Loc.T("active_time");LaunchesColumn.Header=_h.Loc.T("launches");OpenHistoryButton.Content=_h.Loc.T("open_history");Refresh();}
+ void Set(DateTime f,DateTime t){_f=f.Date;_t=t.Date;Refresh();}void Refresh(){if(!IsInitialized)return;var s=_h.Db.Summary(_f,_t);ActiveValue.Text=Dur(s.ActiveSeconds);AfkValue.Text=Dur(s.AfkSeconds);PcOnValue.Text=Dur(s.PcOnSeconds);KeysValue.Text=s.KeyPresses.ToString("N0");TrafficValue.Text=ExportService.Bytes(s.NetworkReceived+s.NetworkSent);AppsGrid.ItemsSource=_h.Db.Apps(_f,_t,500).Select(a=>new GridRow{AppName=a.AppName,DisplayTime=Dur(a.ActiveSeconds),Launches=a.Launches}).ToList();}
+ string Dur(double x)=>_h.Export.Dur(x);
+ void Today_Click(object s,RoutedEventArgs e)=>Set(DateTime.Today,DateTime.Today);void Week_Click(object s,RoutedEventArgs e)=>Set(DateTime.Today.AddDays(-6),DateTime.Today);void Month_Click(object s,RoutedEventArgs e)=>Set(DateTime.Today.AddDays(-29),DateTime.Today);void All_Click(object s,RoutedEventArgs e)=>Set(new DateTime(2000,1,1),DateTime.Today);void Settings_Click(object s,RoutedEventArgs e)=>_h.ShowSettings();void History_Click(object s,RoutedEventArgs e)=>_h.OpenHistory();void Txt_Click(object s,RoutedEventArgs e)=>Open(_h.Export.DailyTxt(DateTime.Today));void Csv_Click(object s,RoutedEventArgs e)=>Open(_h.Export.Csv(_f,_t));void Json_Click(object s,RoutedEventArgs e)=>Open(_h.Export.Json(_f,_t));static void Open(string p)=>Process.Start(new ProcessStartInfo("explorer.exe",$"/select,\"{p}\""){UseShellExecute=true});
+}
